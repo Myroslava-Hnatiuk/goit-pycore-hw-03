@@ -1,6 +1,10 @@
 import re
 
 def normalize_phone(phone_number: str) -> str:
+    if type(phone_number) is not str:
+        print(f"Invalid phone number: {phone_number}. It is not a string.")
+        return None
+
     phone_digits = re.sub(r"[^\d]", "", phone_number) # Remove all non-digit characters from the phone number
 
     if len(phone_digits) < 10:
@@ -25,7 +29,6 @@ def normalize_phone(phone_number: str) -> str:
 
 
 raw_numbers = [
-    "067\\t123 4567",
     "(095) 234-5678\\n",
     "+380 44 123 4567",
     "380501234567",

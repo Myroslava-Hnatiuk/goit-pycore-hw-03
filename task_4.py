@@ -1,18 +1,19 @@
 from datetime import datetime, timedelta
 
-def get_birthdays_from_weekend(user, birthday_this_year): 
-        user_with_congratulations = {} # Create a dictionary to store the user's name and the date for congratulations
-        user_with_congratulations['name'] = user['name'] # Add the user's name to the user_with_congratulations dictionary
+def get_congratulations_date(birthday: datetime) -> datetime:
+    if birthday.weekday() == 5:  # Saturday
+        return birthday + timedelta(days=2) # If the birthday falls on a Saturday, the congratulations date is set to the following Monday (2 days later).
+    if birthday.weekday() == 6:  # Sunday
+        return birthday + timedelta(days=1) # If the birthday falls on a Sunday, the congratulations date is set to the following Monday (1 day later).
+    return birthday
 
-        if birthday_this_year.weekday() == 5: # If the birthday falls on a Saturday, then set the congratulations date to Monday
-            congratulations_date = birthday_this_year + timedelta(days=2) # Add 2 days to the birthday date to get the next Monday
-            user_with_congratulations["congratulations_date"] = congratulations_date.strftime("%Y.%m.%d") # Save the congratulations date in the user dictionary in string format YYYY-MM-DD
 
-        elif birthday_this_year.weekday() == 6: # If the birthday falls on a Sunday, then set the congratulations date to Monday
-            congratulations_date = birthday_this_year + timedelta(days=1) # Add 1 day to the birthday date to get the next Monday
-            user_with_congratulations["congratulations_date"] = congratulations_date.strftime("%Y.%m.%d") # Save the congratulations date in the user dictionary in string format YYYY-MM-DD
-
-        return user_with_congratulations
+def build_birthday_record(user: dict[str, str], birthday: datetime) -> dict[str, str]:
+    congratulations_date = get_congratulations_date(birthday)
+    return {
+        "name": user["name"],
+        "congratulations_date": congratulations_date.strftime("%Y.%m.%d"),
+    }
 
 def get_upcoming_birthdays(users: list[dict[str, str]]) -> list[dict[str, str]]:
     today = datetime.today().date() # Get today's date as a date object
@@ -25,27 +26,15 @@ def get_upcoming_birthdays(users: list[dict[str, str]]) -> list[dict[str, str]]:
             birthday.month,
             birthday.day
         ).date() # Create a date object for the user's birthday in the current year
-
-        user_with_congratulations = {} # Create a dictionary to store the user's name and the date for congratulations
-
-        if birthday_this_year < today and birthday_this_year.weekday() in (5, 6) and today - birthday_this_year <= timedelta(days=2): # If the birthday has already passed this year and it was on a weekend, then show it in the upcoming birthdays list
-            birthday_from_weekend = get_birthdays_from_weekend(user, birthday_this_year)
-            upcoming_birthdays.append(birthday_from_weekend)
-
-        if birthday_this_year < today: # If the birthday has already passed this year, then go to next user
+       
+        if birthday_this_year < today: # If the birthday has already passed this year
+            if birthday_this_year.weekday() in (5, 6) and (today - birthday_this_year).days <= 2: # If the birthday was on a weekend and within the last 2 days
+                upcoming_birthdays.append(build_birthday_record(user, birthday_this_year))
             continue
-        else: 
-            date_diff = (birthday_this_year - today).days # Calculate the difference in days between the birthday in this year and today
-            if date_diff <= 7: # If the birthday is within the next 7 days, then add the user to the upcoming_birthdays list
-                user_with_congratulations['name'] = user['name'] # Add the user's name to the user_with_congratulations dictionary
-                if birthday_this_year.weekday() in (5, 6): # If the birthday falls on a Saturday or Sunday, then set the congratulations date to Monday
-                    birthday_from_weekend = get_birthdays_from_weekend(user, birthday_this_year)
-                    upcoming_birthdays.append(birthday_from_weekend)
 
-                else: # If the birthday falls on a weekday, then set the congratulations date to the birthday itself
-                     user_with_congratulations["congratulations_date"] = birthday_this_year.strftime("%Y.%m.%d")
-                     upcoming_birthdays.append(user_with_congratulations)
-                continue
+        date_diff = (birthday_this_year - today).days # Calculate the difference in days between the birthday and today
+        if date_diff <= 7: # If the birthday is within the next 7 days
+            upcoming_birthdays.append(build_birthday_record(user, birthday_this_year))
 
     return upcoming_birthdays
 

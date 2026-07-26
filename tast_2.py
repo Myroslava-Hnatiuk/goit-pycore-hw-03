@@ -1,19 +1,34 @@
 import random
 
 def get_numbers_ticket(min: int, max: int, quantity: int) -> list[int] | None:
-    # Check if all parameters are integers then return None
+    # Check if all parameters are integers then return an empty list if not
     if not all(type(x) is int for x in (min, max, quantity)): 
         print("Invalid input. Please ensure all parameters are integers.")
-        return None
-    # Check if min is less than 1 then return None
+        return []
+
+    # Check if min is less than 1 then return an empty list
     if min < 1:
         print("Invalid input. Please ensure that min is >= 1.")
-        return None
-    # Check if max is greater than 1000 then return None
+        return []
+
+    # Check if max is less than 1 then return an empty list
+    if max < 1:
+        print("Invalid input. Please ensure that max is >= 1.")
+        return []
+
+    # Check if max is greater than 1000 then return an empty list
     if max > 1000:
         print("Invalid input. Please ensure that max is <= 1000.")
-        return None
-    # Check if min + quantity is less than or equal to max then return None
+        return []
+
+    if min > max:
+        print("Invalid input. Please ensure that min <= max.")
+        return []
+
+    if quantity < 1:
+        print("Invalid input. Please ensure that quantity is >= 1.")
+        return []
+
     if max - min + 1 < quantity:
         print("Invalid input. Please ensure that min + quantity <= max.")
         return None

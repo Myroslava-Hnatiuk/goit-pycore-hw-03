@@ -9,10 +9,10 @@ def get_congratulations_date(birthday: datetime) -> datetime:
 
 
 def build_birthday_record(user: dict[str, str], birthday: datetime) -> dict[str, str]:
-    congratulations_date = get_congratulations_date(birthday)
+    congratulation_date = get_congratulations_date(birthday)
     return {
         "name": user["name"],
-        "congratulations_date": congratulations_date.strftime("%Y.%m.%d"),
+        "congratulation_date": congratulation_date.strftime("%Y.%m.%d"),
     }
 
 def get_upcoming_birthdays(users: list[dict[str, str]]) -> list[dict[str, str]]:

@@ -31,7 +31,7 @@ def get_numbers_ticket(min: int, max: int, quantity: int) -> list[int] | None:
 
     if max - min + 1 < quantity:
         print("Invalid input. Please ensure that min + quantity <= max.")
-        return None
+        return []
     
     random_numbers = range(min, max + 1) # Generate a list of random numbers between min and max + 1 to include max
     selected_amount_of_numbers = random.sample(random_numbers, quantity) # make a random selection of unique numbers from the list of random numbers

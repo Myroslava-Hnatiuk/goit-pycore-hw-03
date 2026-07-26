@@ -5,27 +5,26 @@ def normalize_phone(phone_number: str) -> str:
         print(f"Invalid phone number: {phone_number}. It is not a string.")
         return None
 
-    phone_digits = re.sub(r"[^\d]", "", phone_number) # Remove all non-digit characters from the phone number
+    phone_digits = re.sub(r"\D", "", phone_number) # Remove all non-digit characters from the phone number
 
     if len(phone_digits) < 10:
         print(f"Invalid phone number: {phone_number}. It has less than 10 digits.")
         return None
 
-    # If number starts with +380, it is already correct
-    if phone_digits.startswith("+380"):
-        return phone_digits
-
     # If number starts with 380, add only +
-    elif phone_digits.startswith("380"):
-        return "+" + phone_digits
+    if phone_digits.startswith("380") and len(phone_digits) == 12:
+        return f"+{phone_digits}"
 
     # If number starts with 80, add only +3
-    elif phone_digits.startswith("80"):
-        return "+3" + phone_digits
+    elif phone_digits.startswith("80") and len(phone_digits) == 11:
+        return f"+3{phone_digits}"
 
     # If number starts with 0, add +38
-    elif phone_digits.startswith("0"):
-        return "+38" + phone_digits
+    elif phone_digits.startswith("0") and len(phone_digits) == 10:
+        return f"+38{phone_digits}"
+
+    print(f"Invalid phone number: {phone_number}.")
+    return None
 
 
 raw_numbers = [
@@ -39,7 +38,7 @@ raw_numbers = [
     "38050 111 22 11   ",
     "8 050 123 4567",
     "+380+501234567",
-    "++380501234567"
+    "++380501234545"
 ]
 
 sanitized_numbers = [normalize_phone(num) for num in raw_numbers]

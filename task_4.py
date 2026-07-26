@@ -27,10 +27,8 @@ def get_upcoming_birthdays(users: list[dict[str, str]]) -> list[dict[str, str]]:
             birthday.day
         ).date() # Create a date object for the user's birthday in the current year
        
-        if birthday_this_year < today: # If the birthday has already passed this year
-            if birthday_this_year.weekday() in (5, 6) and (today - birthday_this_year).days <= 2: # If the birthday was on a weekend and within the last 2 days
-                upcoming_birthdays.append(build_birthday_record(user, birthday_this_year))
-            continue
+        if birthday_this_year < today:
+            birthday_this_year = birthday_this_year.replace(year=today.year + 1)
 
         date_diff = (birthday_this_year - today).days # Calculate the difference in days between the birthday and today
         if date_diff <= 7: # If the birthday is within the next 7 days
@@ -39,7 +37,7 @@ def get_upcoming_birthdays(users: list[dict[str, str]]) -> list[dict[str, str]]:
     return upcoming_birthdays
 
 users = [
-    {"name": "John Doe", "birthday": "1985.07.25"},
+    {"name": "John Doe", "birthday": "1985.07.26"},
     {"name": "Jane Smith", "birthday": "1990.07.27"},
     {"name": "Bob Johnson", "birthday": "1990.05.07"},
     {"name": "Karl", "birthday": "1990.09.17"},

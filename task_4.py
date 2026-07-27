@@ -31,7 +31,7 @@ def get_upcoming_birthdays(users: list[dict[str, str]]) -> list[dict[str, str]]:
             birthday_this_year = birthday_this_year.replace(year=today.year + 1)
 
         date_diff = (birthday_this_year - today).days # Calculate the difference in days between the birthday and today
-        if date_diff <= 7: # If the birthday is within the next 7 days
+        if 0 <= date_diff <= 7: # Include birthdays from today through the next 7 days inclusive
             upcoming_birthdays.append(build_birthday_record(user, birthday_this_year))
 
     return upcoming_birthdays

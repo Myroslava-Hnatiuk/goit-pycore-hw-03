@@ -1,14 +1,12 @@
 import re
 
-def normalize_phone(phone_number: str) -> str:
+def normalize_phone(phone_number: str) -> str | None:
     if type(phone_number) is not str:
-        print(f"Invalid phone number: {phone_number}. It is not a string.")
         return None
 
     phone_digits = re.sub(r"\D", "", phone_number) # Remove all non-digit characters from the phone number
 
     if len(phone_digits) < 10:
-        print(f"Invalid phone number: {phone_number}. It has less than 10 digits.")
         return None
 
     # If number starts with 380, add only +
@@ -23,7 +21,6 @@ def normalize_phone(phone_number: str) -> str:
     elif phone_digits.startswith("0") and len(phone_digits) == 10:
         return f"+38{phone_digits}"
 
-    print(f"Invalid phone number: {phone_number}.")
     return None
 
 

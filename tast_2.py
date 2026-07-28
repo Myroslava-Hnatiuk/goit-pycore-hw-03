@@ -31,12 +31,3 @@ def get_numbers_ticket(min: int, max: int, quantity: int) -> list[int]:
     sorted_numbers = sorted(selected_amount_of_numbers) # sort the selected numbers in ascending order
     print(sorted_numbers)
     return sorted_numbers
-
-
-get_numbers_ticket(1, 49, 6) # [1, 4, 5, 12, 19, 36]
-get_numbers_ticket(1, 36, 5) # [6, 8, 14, 16, 17]
-get_numbers_ticket(0, 35, 5) # []
-get_numbers_ticket(1, 1001, 5) # []
-get_numbers_ticket(1, 10, 15) # []
-get_numbers_ticket(1, 10, "five") # []
-get_numbers_ticket(1, 10, 5.5) # []
